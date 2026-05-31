@@ -9,3 +9,7 @@ id = "<links-namespace-id>"
 [[kv_namespaces]]
 binding = "COOLOFF"
 id = "<cooloff-namespace-id>"
+
+# Secrets — set via: wrangler secret put ADMIN_SECRET
+# and: wrangler secret put FORM_TOKEN
+# For local dev, create worker/.dev.vars with ADMIN_SECRET= and FORM_TOKEN=
