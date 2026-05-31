@@ -141,18 +141,22 @@ Standard gTLDs (`.xyz`, `.link`, `.com`, `.org`) follow ICANN rules and WHOIS pr
 
 *This guide will be expanded with deployment instructions for both the Cloudflare Workers path and the Docker/VPS path.*
 
+---
+
 ## Sharing the form with your group
 
-After deploying, set a form token:
+Set a form token if you haven't already. Use a random string of at least 16 characters — a password manager can generate one:
 
 ```bash
 wrangler secret put FORM_TOKEN
 ```
 
-Share this URL with your group:
+Share this URL with your group (replace `YOUR_FORM_TOKEN` with the value you typed at the prompt above):
 
 ```
 https://your.domain/go/YOUR_FORM_TOKEN
 ```
 
-That URL is the only thing they need. It opens the form, lets them shorten a URL and download a QR code, and gives them nothing else. If the token is ever compromised, run `wrangler secret put FORM_TOKEN` again with a new value and share the updated URL.
+That URL is the only thing they need. It opens the form, lets them shorten a URL and download a QR code, and gives them nothing else.
+
+If the token is ever compromised, run `wrangler secret put FORM_TOKEN` again with a new value and share the updated URL. Anyone using the old URL will immediately see a "not found" page — send the new URL before rotating if your group needs a transition window.
