@@ -13,11 +13,11 @@ export function renderForm(token) {
   --bg: #0f0f11;
   --surface: #1a1a1f;
   --border: #2a2a32;
-  --accent: #7c6af7;
+  --accent: #d53f23;
   --text: #e8e8f0;
   --text-muted: #6b6b80;
   --text-dim: #9999aa;
-  --success: #4ade80;
+  --success: #fbdf71;
   --radius: 10px;
 }
 body {
