@@ -1,3 +1,5 @@
+import { renderForm } from './form.js';
+
 const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
 function generateSlug() {
@@ -24,6 +26,16 @@ const BASE_HEADERS = {
 export default {
   async fetch(request, env) {
     const { pathname } = new URL(request.url);
+
+    if (request.method === 'GET' && pathname.startsWith('/go/')) {
+      const token = pathname.slice(4);
+      if (token !== env.FORM_TOKEN) {
+        return new Response('Not found', { status: 404, headers: BASE_HEADERS });
+      }
+      return new Response(renderForm(token), {
+        headers: { ...BASE_HEADERS, 'Content-Type': 'text/html;charset=utf-8' },
+      });
+    }
 
     if (request.method === 'GET' && pathname.length > 1) {
       const slug = pathname.slice(1).toUpperCase();
