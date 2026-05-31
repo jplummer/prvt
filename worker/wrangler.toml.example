@@ -10,6 +10,12 @@ id = "<links-namespace-id>"
 binding = "COOLOFF"
 id = "<cooloff-namespace-id>"
 
+[[unsafe.bindings]]
+name = "SHORTEN_LIMITER"
+type = "ratelimit"
+namespace_id = "1001"
+simple = { limit = 10, period = 60 }
+
 # Secrets — set via: wrangler secret put ADMIN_SECRET
 # and: wrangler secret put FORM_TOKEN
 # For local dev, create worker/.dev.vars with ADMIN_SECRET= and FORM_TOKEN=

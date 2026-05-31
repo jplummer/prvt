@@ -101,6 +101,13 @@ export default {
       if (token !== env.FORM_TOKEN) {
         return new Response('Unauthorized', { status: 401, headers: BASE_HEADERS });
       }
+
+      const ip = request.headers.get('CF-Connecting-IP') ?? 'unknown';
+      const { success } = await env.SHORTEN_LIMITER.limit({ key: ip });
+      if (!success) {
+        return new Response('Too many requests', { status: 429, headers: BASE_HEADERS });
+      }
+
       if (!url || (!url.startsWith('https://') && !url.startsWith('http://'))) {
         return new Response('URL must start with http:// or https://', { status: 400, headers: BASE_HEADERS });
       }
