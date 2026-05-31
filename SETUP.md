@@ -143,6 +143,22 @@ Standard gTLDs (`.xyz`, `.link`, `.com`, `.org`) follow ICANN rules and WHOIS pr
 
 ---
 
+## Enable DNSSEC
+
+Once your domain is active in Cloudflare, enable DNSSEC to prevent DNS spoofing attacks:
+
+Cloudflare Dashboard → your domain → **DNS** → **Settings** → **DNSSEC** → **Enable**
+
+Cloudflare handles key generation and DS record publication automatically. To verify it worked:
+
+```bash
+dig your.domain DNSKEY +short
+```
+
+You should see two `DNSKEY` records. An empty result means DNSSEC is not yet active.
+
+---
+
 ## Sharing the form with your group
 
 Set a form token if you haven't already. Use a random string of at least 16 characters — a password manager can generate one:
