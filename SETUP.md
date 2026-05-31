@@ -262,6 +262,14 @@ curl -s -X POST https://your.domain/create \
 
 You should get back `{"slug":"XXXX","short":"HTTPS://YOUR.DOMAIN/XXXX","expires":"..."}`. Follow the short link to confirm the redirect works.
 
+### A note on Cloudflare logging
+
+By default, Cloudflare Workers **does not persist per-request logs**. Live log streaming is available via `wrangler tail` or the Cloudflare dashboard (Workers & Pages → your Worker → Logs tab) during active debugging, but nothing is stored.
+
+**Do not enable Logpush** (Dashboard → Analytics & Logs → Logpush) for this Worker. Logpush ships request logs to an external destination and would undermine prvt's no-logging design. Aggregate traffic analytics (request counts, error rates) are fine — they contain no per-request content.
+
+---
+
 ### Updating the form's "Run your own instance" link
 
 Before sharing, update the source link in the form so visitors can find this repo:
