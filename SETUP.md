@@ -139,7 +139,140 @@ Standard gTLDs (`.xyz`, `.link`, `.com`, `.org`) follow ICANN rules and WHOIS pr
 
 ---
 
-*This guide will be expanded with deployment instructions for both the Cloudflare Workers path and the Docker/VPS path.*
+## Deploying on Cloudflare Workers
+
+### Prerequisites
+
+- **Node.js v18 or later** — check with `node --version`; install from [nodejs.org](https://nodejs.org) if needed
+- **A Cloudflare account** — create one at [cloudflare.com](https://cloudflare.com) (free tier is sufficient). Use a masked email address, same as you did for your domain registrar.
+- **Your domain added to Cloudflare** — see below
+
+### Step 1: Add your domain to Cloudflare
+
+If you registered with **Cloudflare Registrar** (Option A), your domain is already in your account — skip to Step 2.
+
+If you registered with **a separate registrar** (Option B):
+
+1. Cloudflare Dashboard → **Add a Site** → enter your domain → select the **Free** plan
+2. Cloudflare will show you two nameserver addresses (e.g. `aria.ns.cloudflare.com`)
+3. At your registrar, update the nameservers to the two Cloudflare addresses
+4. Wait for propagation — Cloudflare will show **Active** when done (usually 5–30 minutes)
+
+### Step 2: Install Wrangler and authenticate
+
+[Wrangler](https://developers.cloudflare.com/workers/wrangler/) is Cloudflare's deployment tool.
+
+```bash
+npm install -g wrangler
+wrangler login
+```
+
+`wrangler login` opens a browser window to authenticate with your Cloudflare account.
+
+### Step 3: Clone the repo and install dependencies
+
+```bash
+git clone https://codeberg.org/nooble/prvt
+cd prvt/worker
+npm install
+```
+
+### Step 4: Create the KV namespaces
+
+prvt uses two Cloudflare KV namespaces to store links. Create both:
+
+```bash
+wrangler kv namespace create LINKS
+wrangler kv namespace create COOLOFF
+```
+
+Each command prints output like:
+
+```
+{ "binding": "LINKS", "id": "abc123..." }
+```
+
+Copy both IDs — you'll need them in the next step.
+
+### Step 5: Configure wrangler.toml
+
+```bash
+cp wrangler.toml.example wrangler.toml
+```
+
+Open `wrangler.toml` and fill in:
+
+- **`routes`** — replace `your.domain` with your actual domain (appears twice)
+- **`LINKS` id** — paste the ID from the `wrangler kv namespace create LINKS` output
+- **`COOLOFF` id** — paste the ID from the `wrangler kv namespace create COOLOFF` output
+
+`wrangler.toml` is gitignored — it contains your account details and should never be committed.
+
+### Step 6: Set your secrets
+
+```bash
+wrangler secret put ADMIN_SECRET
+```
+
+This is your private key for creating links via the API directly. Use a long random string — a password manager can generate one. Store it somewhere safe; you cannot retrieve it later, only overwrite it.
+
+```bash
+wrangler secret put FORM_TOKEN
+```
+
+This is the token embedded in the shared form URL. Use a different long random string. See [Sharing the form with your group](#sharing-the-form-with-your-group) below for how to distribute it.
+
+### Step 7: Deploy
+
+```bash
+wrangler deploy
+```
+
+You should see:
+
+```
+Deployed prvt triggers
+  your.domain/* (zone name: your.domain)
+```
+
+### Step 8: Verify it works
+
+Test the redirect endpoint — this should return 404 (no links exist yet):
+
+```bash
+curl -sI https://your.domain/XXXX
+```
+
+Test authentication — this should return `Unauthorized`:
+
+```bash
+curl -s -X POST https://your.domain/create \
+  -H "Content-Type: application/json" \
+  -d '{"url":"https://example.com","ttl":3600}'
+```
+
+Create a test link with your `ADMIN_SECRET`:
+
+```bash
+curl -s -X POST https://your.domain/create \
+  -H "Authorization: Bearer YOUR_ADMIN_SECRET" \
+  -H "Content-Type: application/json" \
+  -d '{"url":"https://example.com","ttl":3600}'
+```
+
+You should get back `{"slug":"XXXX","short":"HTTPS://YOUR.DOMAIN/XXXX","expires":"..."}`. Follow the short link to confirm the redirect works.
+
+### Updating the form's "Run your own instance" link
+
+Before sharing, update the source link in the form so visitors can find this repo:
+
+Open `worker/src/form.js` and find the `about-link` anchor near the bottom. Replace the Codeberg URL with your own fork if you've made changes, or leave it pointing to the original repo.
+
+Then redeploy:
+
+```bash
+wrangler deploy
+```
 
 ---
 

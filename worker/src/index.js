@@ -26,7 +26,8 @@ const BASE_HEADERS = {
 
 export default {
   async fetch(request, env) {
-    const { pathname } = new URL(request.url);
+    const { pathname, hostname } = new URL(request.url);
+    const shortBase = `HTTPS://${hostname.toUpperCase()}`;
 
     if (request.method === 'GET' && pathname.startsWith('/go/')) {
       const token = pathname.slice('/go/'.length).replace(/\/$/, '');
@@ -81,7 +82,7 @@ export default {
       await env.LINKS.put(slug, url, { expirationTtl: Number(ttl) });
       await env.COOLOFF.put(slug, '1', { expirationTtl: 7776000 });
 
-      const short = `HTTPS://PRVT.PW/${slug}`;
+      const short = `${shortBase}/${slug}`;
       const expires = new Date(Date.now() + Number(ttl) * 1000).toISOString();
 
       return new Response(JSON.stringify({ slug, short, expires }), {
@@ -122,7 +123,7 @@ export default {
       await env.LINKS.put(slug, url, { expirationTtl: ttlSecs });
       await env.COOLOFF.put(slug, '1', { expirationTtl: 7776000 });
 
-      const short = `HTTPS://PRVT.PW/${slug}`;
+      const short = `${shortBase}/${slug}`;
       const expires = new Date(Date.now() + ttlSecs * 1000).toISOString();
 
       return new Response(JSON.stringify({ slug, short, expires }), {
