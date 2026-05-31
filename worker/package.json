@@ -1,0 +1,11 @@
+{
+  "name": "prvt",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  },
+  "dependencies": {
+    "qrcode": "^1.5.4"
+  }
+}

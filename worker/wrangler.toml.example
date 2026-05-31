@@ -1,0 +1,11 @@
+name = "prvt"
+main = "src/index.js"
+compatibility_date = "2024-09-23"
+
+[[kv_namespaces]]
+binding = "LINKS"
+id = "<links-namespace-id>"
+
+[[kv_namespaces]]
+binding = "COOLOFF"
+id = "<cooloff-namespace-id>"
