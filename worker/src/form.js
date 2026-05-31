@@ -174,8 +174,8 @@ async function generate() {
   const btn = document.getElementById('gen-btn');
 
   errEl.textContent = '';
-  if (!url.startsWith('https://')) {
-    errEl.textContent = 'URL must start with https://';
+  if (!url.startsWith('https://') && !url.startsWith('http://')) {
+    errEl.textContent = 'URL must start with http:// or https://';
     return;
   }
 

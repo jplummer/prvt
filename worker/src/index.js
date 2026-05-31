@@ -68,8 +68,8 @@ export default {
       }
 
       const { url, ttl = 86400 } = body;
-      if (!url || !url.startsWith('https://')) {
-        return new Response('URL must start with https://', { status: 400, headers: BASE_HEADERS });
+      if (!url || (!url.startsWith('https://') && !url.startsWith('http://'))) {
+        return new Response('URL must start with http:// or https://', { status: 400, headers: BASE_HEADERS });
       }
 
       const slug = await makeSlug(env);
@@ -101,8 +101,8 @@ export default {
       if (token !== env.FORM_TOKEN) {
         return new Response('Unauthorized', { status: 401, headers: BASE_HEADERS });
       }
-      if (!url || !url.startsWith('https://')) {
-        return new Response('URL must start with https://', { status: 400, headers: BASE_HEADERS });
+      if (!url || (!url.startsWith('https://') && !url.startsWith('http://'))) {
+        return new Response('URL must start with http:// or https://', { status: 400, headers: BASE_HEADERS });
       }
 
       const slug = await makeSlug(env);
