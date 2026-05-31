@@ -144,7 +144,7 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
         <div class="short-url" id="short-url"></div>
         <div class="expiry" id="expiry"></div>
         <div class="btn-row">
-          <button class="btn-sm" onclick="copyUrl()">Copy URL</button>
+          <button class="btn-sm" onclick="copyUrl(this)">Copy URL</button>
           <button class="btn-sm" onclick="downloadSvg()">&#8595; SVG</button>
           <button class="btn-sm" onclick="downloadPng()">&#8595; PNG</button>
         </div>
@@ -221,6 +221,7 @@ async function generate() {
 
 function formatExpiry(iso) {
   const diff = new Date(iso) - Date.now();
+  if (diff <= 0) return 'Expires soon';
   const days = Math.round(diff / 86400000);
   if (days < 1) return 'Expires today';
   if (days === 1) return 'Expires in 1 day';
@@ -229,13 +230,23 @@ function formatExpiry(iso) {
   return 'Expires in ' + weeks + ' week' + (weeks > 1 ? 's' : '');
 }
 
-function copyUrl() {
-  navigator.clipboard.writeText(document.getElementById('short-url').textContent);
+function copyUrl(btn) {
+  navigator.clipboard.writeText(document.getElementById('short-url').textContent)
+    .then(() => {
+      btn.textContent = 'Copied!';
+      setTimeout(() => { btn.textContent = 'Copy URL'; }, 1500);
+    })
+    .catch(() => {
+      btn.textContent = 'Copy failed';
+      setTimeout(() => { btn.textContent = 'Copy URL'; }, 1500);
+    });
 }
 
 function downloadSvg() {
   const blob = new Blob([svgString], { type: 'image/svg+xml' });
-  trigger(URL.createObjectURL(blob), 'qr-' + currentSlug + '.svg');
+  const url = URL.createObjectURL(blob);
+  trigger(url, 'qr-' + currentSlug + '.svg');
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
 function downloadPng() {
@@ -246,7 +257,9 @@ function trigger(href, filename) {
   const a = document.createElement('a');
   a.href = href;
   a.download = filename;
+  document.body.appendChild(a);
   a.click();
+  document.body.removeChild(a);
 }
 
 document.getElementById('url').addEventListener('keydown', e => {
