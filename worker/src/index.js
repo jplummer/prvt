@@ -72,6 +72,40 @@ export default {
       });
     }
 
+    if (request.method === 'POST' && pathname === '/shorten') {
+      let body;
+      try {
+        body = await request.json();
+      } catch {
+        return new Response('Bad request', { status: 400, headers: BASE_HEADERS });
+      }
+
+      const { url, ttl, token } = body;
+      if (token !== env.FORM_TOKEN) {
+        return new Response('Unauthorized', { status: 401, headers: BASE_HEADERS });
+      }
+      if (!url || !url.startsWith('https://')) {
+        return new Response('URL must start with https://', { status: 400, headers: BASE_HEADERS });
+      }
+
+      const slug = await makeSlug(env);
+      if (!slug) {
+        return new Response('Could not generate slug', { status: 503, headers: BASE_HEADERS });
+      }
+
+      const ttlSecs = Number(ttl) || 604800;
+      await env.LINKS.put(slug, url, { expirationTtl: ttlSecs });
+      await env.COOLOFF.put(slug, '1', { expirationTtl: 7776000 });
+
+      const short = `HTTPS://PRVT.PW/${slug}`;
+      const expires = new Date(Date.now() + ttlSecs * 1000).toISOString();
+
+      return new Response(JSON.stringify({ slug, short, expires }), {
+        status: 201,
+        headers: { ...BASE_HEADERS, 'Content-Type': 'application/json' },
+      });
+    }
+
     return new Response('Not found', { status: 404, headers: BASE_HEADERS });
   },
 };
