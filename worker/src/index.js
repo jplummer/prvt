@@ -28,12 +28,17 @@ export default {
     const { pathname } = new URL(request.url);
 
     if (request.method === 'GET' && pathname.startsWith('/go/')) {
-      const token = pathname.slice(4);
+      const token = pathname.slice('/go/'.length).replace(/\/$/, '');
       if (token !== env.FORM_TOKEN) {
         return new Response('Not found', { status: 404, headers: BASE_HEADERS });
       }
       return new Response(renderForm(token), {
-        headers: { ...BASE_HEADERS, 'Content-Type': 'text/html;charset=utf-8' },
+        status: 200,
+        headers: {
+          ...BASE_HEADERS,
+          'Content-Type': 'text/html;charset=utf-8',
+          'X-Frame-Options': 'DENY',
+        },
       });
     }
 
