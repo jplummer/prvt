@@ -21,6 +21,7 @@ const BASE_HEADERS = {
   'Referrer-Policy': 'no-referrer',
   'X-Content-Type-Options': 'nosniff',
   'Cache-Control': 'no-store',
+  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
 };
 
 export default {

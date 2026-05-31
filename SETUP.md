@@ -159,4 +159,4 @@ https://your.domain/go/YOUR_FORM_TOKEN
 
 That URL is the only thing they need. It opens the form, lets them shorten a URL and download a QR code, and gives them nothing else.
 
-If the token is ever compromised, run `wrangler secret put FORM_TOKEN` again with a new value and share the updated URL. Anyone using the old URL will immediately see a "not found" page — send the new URL before rotating if your group needs a transition window.
+**Security model:** The token is embedded in the page source and visible to anyone who opens browser developer tools after loading the form. Security depends entirely on keeping the URL confidential — treat it like a password and share it only with people you trust. Anyone who has the URL can create short links on your domain. If the token is ever compromised, run `wrangler secret put FORM_TOKEN` again with a new value and share the updated URL. Anyone using the old URL will immediately see a "not found" page — send the new URL before rotating if your group needs a transition window.
