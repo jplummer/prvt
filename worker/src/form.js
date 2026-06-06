@@ -133,6 +133,7 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
         <option value="2592000">1 month</option>
         <option value="5184000">2 months</option>
         <option value="7776000">1 quarter</option>
+        <option value="15552000">6 months</option>
       </select>
       <button id="gen-btn" onclick="generate()">Shorten &amp; Generate QR</button>
     </div>
