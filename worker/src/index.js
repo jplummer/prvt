@@ -119,7 +119,7 @@ export default {
         return new Response('Could not generate slug', { status: 503, headers: BASE_HEADERS });
       }
 
-      const ttlSecs = Number(ttl) || 604800;
+      const ttlSecs = Number(ttl) || 1209600;
       await env.LINKS.put(slug, url, { expirationTtl: ttlSecs });
       await env.COOLOFF.put(slug, '1', { expirationTtl: 7776000 });
 

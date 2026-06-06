@@ -127,8 +127,8 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
       <select id="ttl">
         <option value="86400">1 day</option>
         <option value="259200">3 days</option>
-        <option value="604800" selected>1 week (default)</option>
-        <option value="1209600">2 weeks</option>
+        <option value="604800">1 week</option>
+        <option value="1209600" selected>2 weeks (default)</option>
         <option value="2419200">4 weeks</option>
         <option value="2592000">1 month</option>
         <option value="5184000">2 months</option>
