@@ -129,7 +129,6 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
         <option value="259200">3 days</option>
         <option value="604800">1 week</option>
         <option value="1209600" selected>2 weeks (default)</option>
-        <option value="2419200">4 weeks</option>
         <option value="2592000">1 month</option>
         <option value="5184000">2 months</option>
         <option value="7776000">1 quarter</option>
