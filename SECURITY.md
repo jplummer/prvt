@@ -63,4 +63,4 @@ Treat the form URL like a password: share it only with trusted people, over an e
 
 ## Responsible disclosure
 
-If you find a security or privacy issue in this project, please report it by opening a confidential issue on [Codeberg](https://codeberg.org/nooble/prvt) or contacting the maintainer directly. Please do not publish details publicly until a fix is available.
+If you find a security or privacy issue in this project, please report it by opening an issue on [GitHub](https://github.com/jplummer/prvt) or contacting the maintainer directly. Please do not publish details publicly until a fix is available.

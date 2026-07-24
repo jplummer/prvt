@@ -23,7 +23,7 @@ See **[SETUP.md](SETUP.md)** for full instructions including private domain regi
 Quick version:
 
 ```bash
-git clone https://codeberg.org/nooble/prvt
+git clone https://github.com/jplummer/prvt
 cd prvt/worker
 npm install
 cp wrangler.toml.example wrangler.toml  # fill in your KV namespace IDs

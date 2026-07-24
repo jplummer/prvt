@@ -172,7 +172,7 @@ wrangler login
 ### Step 3: Clone the repo and install dependencies
 
 ```bash
-git clone https://codeberg.org/nooble/prvt
+git clone https://github.com/jplummer/prvt
 cd prvt/worker
 npm install
 ```

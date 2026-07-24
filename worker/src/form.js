@@ -159,7 +159,7 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
     <div class="panel-label">About</div>
     <p class="about-body"><strong>prvt</strong> generates short links that self-destruct. Scan a QR code, follow a link — the destination stays private and the link disappears when its time is up.</p>
     <p class="about-body">No click tracking. No analytics. No third-party visibility into where your links go or who follows them. Public URL shorteners are surveillance businesses. This one isn't.</p>
-    <a class="about-link" href="https://codeberg.org/nooble/prvt" target="_blank" rel="noopener noreferrer">Run your own instance &#8599;</a>
+    <a class="about-link" href="https://github.com/jplummer/prvt" target="_blank" rel="noopener noreferrer">Run your own instance &#8599;</a>
   </div>
 
 </div>
